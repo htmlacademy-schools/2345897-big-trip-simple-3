@@ -9,7 +9,7 @@ const OFFERS = [
   {
     type: 'taxi',
     offers: [
-      { id: 1, title: 'a taxi with a child seat', price: 15 },
+      { id: 1, title: 'Ordering a taxi with a child seat', price: 15 },
       { id: 2, title: 'Possibility to go to an additional place', price: 10 },
     ],
   },
