@@ -1,15 +1,15 @@
-import { createElement } from '../render.js';
-import { humanizeDateTime } from '../presenter/util.js';
+import {createElement} from '../render.js';
+import { humanizeDateTime } from '../util.js';
 import { cities } from '../mock/point.js';
 import { getOffers } from '../mock/offers.js';
-import { pointType } from '../mock/point.js';
+import { typePoint } from '../mock/point.js';
 
-const offerTemplate = (title, price, checked) => (
+const offerTemplate = (id, title, price, checked) => (
   `
   <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${checked}>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}-${id}" type="checkbox" name="event-offer-${title}" ${checked}>
 
-    <label class="event__offer-label" for="event-offer-luggage-1">
+    <label class="event__offer-label" for="event-offer-${title}-${id}">
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${price}</span>
@@ -30,7 +30,7 @@ const getAllOffersId = (type, offersInner) => {
     } else {
       checked = '';
     }
-    finalListOfOffers.push(offerTemplate(listOfAllOffers[i].title, listOfAllOffers[i].price, checked));
+    finalListOfOffers.push(offerTemplate(listOfAllOffers[i].id, listOfAllOffers[i].title, listOfAllOffers[i].price, checked));
   }
   return finalListOfOffers.join('');
 };
@@ -74,22 +74,22 @@ const iconsTypesMarking = (typeInner, checked) => (
 const iconsTypesChecked = (typeInner) => {
   const iconsListMarking = [];
   let checked = '';
-  for (let i = 0; i < pointType.length; i++) {
-    checked = typeInner === pointType[i] ? 'checked' : '';
-    iconsListMarking.push(iconsTypesMarking(pointType[i], checked));
+  for (let i = 0; i < typePoint.length; i++) {
+    checked = typeInner === typePoint[i] ? 'checked' : '';
+    iconsListMarking.push(iconsTypesMarking(typePoint[i], checked));
   }
   return iconsListMarking.join('');
 };
 
 const editPointTemplate = (point) => {
-  const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
+  const {basePrice, dateFrom, dateTo, destination, offers, type} = point;
   const allOffersByType = getAllOffersId(type, offers);
   const offersContainer = offersTemplateContainer(allOffersByType);
   const photoTemplate = createphotoTemplate(destination);
 
   return (`
 <li class="trip-events__item">
-<form class="event event--edit" action="#" method="post">
+<form class="event event--edit" action="#" method="">
   <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -157,19 +157,25 @@ const editPointTemplate = (point) => {
 };
 
 export default class viewEditPoint {
+  #element = null;
+
   constructor(point) {
     this.point = point;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(editPointTemplate(this.point));
+  get template() {
+    return editPointTemplate(this.point);
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
