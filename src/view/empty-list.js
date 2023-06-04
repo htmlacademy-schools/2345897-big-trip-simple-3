@@ -1,10 +1,12 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createEmptyTemplate = () => (
   `
     <section class="trip-events">
       <h2 class="visually-hidden">Trip events</h2>
+
       <p class="trip-events__msg">Click New Event to create your first point</p>
+
       <!--
         Значение отображаемого текста зависит от выбранного фильтра:
           * Everthing – 'Click New Event to create your first point'
@@ -15,22 +17,8 @@ const createEmptyTemplate = () => (
   `
 );
 
-export default class viewNul {
-  #element = null;
-
+export default class EmptyList extends AbstractView {
   get template() {
     return createEmptyTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

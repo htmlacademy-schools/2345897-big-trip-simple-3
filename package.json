@@ -1,37 +1,38 @@
 {
   "name": "big-trip-simple",
-  "version": "19.0.0",
+  "version": "18.0.0",
   "private": true,
   "description": "Проект «Большое путешествие (простой)» от HTML Academy",
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all",
+    "not < 0.25%"
+  ],
   "scripts": {
     "lint": "eslint src/",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "dayjs": "1.11.3",
-    "eslint": "8.28.0",
-    "eslint-config-htmlacademy": "8.0.0",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0"
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "babel-loader": "8.2.5",
+    "copy-webpack-plugin": "10.2.4",
+    "css-loader": "^6.7.1",
+    "eslint": "8.19.0",
+    "eslint-config-htmlacademy": "6.0.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.85.0",
+    "webpack-cli": "4.10.0",
+    "webpack-dev-server": "4.9.3"
   },
   "engines": {
-    "node": "18"
+    "node": "16"
   },
-  "browserslist": [
-    "last 2 versions",
-    "not dead",
-    "not < 0.5%",
-    "not ie <= 11"
-  ],
   "dependencies": {
-    "-": "^0.0.1",
-    "@babel/core": "^7.20.5",
-    "@babel/preset-env": "^7.20.2",
-    "babel-loader": "^9.1.0",
-    "dayjs": "^1.11.7",
-    "webpack-dev-server": "^4.11.1"
+    "dayjs": "1.11.3",
+    "flatpickr": "^4.6.13"
   }
 }

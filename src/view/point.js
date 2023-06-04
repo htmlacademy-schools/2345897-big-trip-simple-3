@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeDate, humanizeTime } from '../utils.js';
 
 const createOfferTemplate = ({ title, price }) => (`
@@ -45,10 +45,9 @@ const createPointsTemplate = (point) => {
   `);
 };
 
-export default class viewPoint {
-  #element = null;
-
+export default class Point extends AbstractView {
   constructor(point) {
+    super();
     this.point = point;
   }
 
@@ -56,15 +55,13 @@ export default class viewPoint {
     return createPointsTemplate(this.point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setPointClickHandler = (callback) => {
+    this._callback.pointClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#pointClickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #pointClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.pointClick();
+  };
 }
