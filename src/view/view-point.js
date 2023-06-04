@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeDate, humanizeTime } from '../util.js';
+import { humanizeDate, humanizeTime, humanizeDateTimeForFilters } from '../util/util.js';
 
 const createOfferTemplate = ({ title, price }) => (`
   <li class="event__offer">
@@ -18,16 +18,16 @@ const createPointsTemplate = (point) => {
   return (`
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="2019-03-18">${humanizeDate('2019-03-18')}</time>
+        <time class="event__date" datetime=${humanizeDateTimeForFilters(dateFrom)}>${humanizeDate(dateFrom)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${destination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T14:30">${humanizeTime(dateFrom)}</time>
+            <time class="event__start-time" datetime=${dateFrom}>${humanizeTime(dateFrom)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T16:05">${humanizeTime(dateTo)}</time>
+            <time class="event__end-time" datetime=${dateTo}>${humanizeTime(dateTo)}</time>
           </p>
         </div>
         <p class="event__price">
@@ -45,7 +45,7 @@ const createPointsTemplate = (point) => {
   `);
 };
 
-export default class ViewPoint extends AbstractView {
+export default class ViewPoin extends AbstractView {
   constructor(point) {
     super();
     this.point = point;
