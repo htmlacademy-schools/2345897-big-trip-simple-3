@@ -25,7 +25,8 @@
       <div class="trip-main__trip-controls  trip-controls">
         <div class="trip-controls__filters">
           <h2 class="visually-hidden">Filter events</h2>
-          <!-- Фильтры -->
+
+          <trip-filter></trip-filter>
         </div>
       </div>
 
@@ -38,12 +39,15 @@
     <section class="trip-events">
       <h2 class="visually-hidden">Trip events</h2>
 
-      <!-- Сортировка -->
+      <p class="trip-events__msg">Loading...</p>
 
-      <!-- Контент -->
+      <trip-sort></trip-sort>
+      <trip-list></trip-list>
     </section>
   </div>
+  </div>
 </main>
+
 <script src="./bundle.js"></script>
 </body>
 </html>
