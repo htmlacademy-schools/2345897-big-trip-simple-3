@@ -3,9 +3,10 @@ import { getOffers } from './offers.js';
 
 export const cities = [
 
-  'London',
-  'Dubai',
   'Kazan',
+  'Dubai',
+  'London',
+
   'Los Angeles'
 ];
 
@@ -32,7 +33,7 @@ const textFish = () => {
   return text[randomIndex];
 };
 
-export const typePoint = [
+export const pointType = [
   'taxi',
   'bus',
   'train',
@@ -46,16 +47,16 @@ export const typePoint = [
 
 const pointGenerate = () => {
 
-  const randomIndex = getRandomInteger(0, typePoint.length - 1);
+  const randomIndex = getRandomInteger(0, pointType .length - 1);
 
-  return typePoint[randomIndex];
+  return pointType [randomIndex];
 };
 const photoGenerate = () => {
   const photo = [];
   for (let i = 0; i < getRandomInteger(0, 10); i++) {
     photo.push({
       src: `http://picsum.photos/300/200?r=45${getRandomInteger(0, 9)}`,
-      description: textFish()
+      description: textFish ()
     });
   }
   return photo;
@@ -63,9 +64,9 @@ const photoGenerate = () => {
 
 const generateDestination = (idValue) => ({
   id: idValue,
-  description: textFish(),
+  description: textFish (),
   name: citiesGenerate(),
-  photo: photoGenerate()
+  photo: photoGenerate ()
 }
 );
 
@@ -74,18 +75,18 @@ for (let i = 0; i < 10; i++) {
   destinations.push(generateDestination(i));
 }
 
-export const generateDataPoint = () => ({
+export const dataGenerate = () => ({
   basePrice: getRandomInteger(200, 3000),
   dateFrom: new Date(getRandomInteger(2010, 2022), getRandomInteger(0, 12), getRandomInteger(0, 31), getRandomInteger(0, 24), getRandomInteger(0, 60)),
   dateTo: new Date(),
   destination: getRandomInteger(0, 9),
   id: '0',
   offers: [],
-  type: pointGenerate(),
+  type: pointGenerate (),
 });
 
 export const generatePoint = () => {
-  const dataPoint = generateDataPoint();
+  const dataPoint = dataGenerate();
   const dataType = dataPoint.type;
   const getOffersId = getOffers().find((offer) => offer.type === dataType).offers.map((offer) => offer.id);
   dataPoint.offers = getOffersId;
