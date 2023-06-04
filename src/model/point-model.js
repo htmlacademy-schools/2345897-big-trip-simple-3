@@ -2,7 +2,7 @@ import { getOffers } from '../mock/offers.js';
 import { destinations, generatePoint } from '../mock/point.js';
 
 export default class PointModel {
-  #points = Array.from({ length: 0 }, generatePoint);
+  #points = Array.from({ length: 3 }, generatePoint);
   offers = getOffers();
 
   getPoint = (point) => {
