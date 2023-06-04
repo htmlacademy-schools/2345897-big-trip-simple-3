@@ -1,4 +1,3 @@
-
 import {FilterPredicate} from './enum/all-func';
 import {SortCapSortCompare} from './enum/all-func';
 
