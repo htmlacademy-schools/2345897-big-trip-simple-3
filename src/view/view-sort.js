@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import {createElement} from '../render.js';
 
 const createSortTemplate = () => (`
 <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -30,16 +30,21 @@ const createSortTemplate = () => (`
 `);
 
 export default class viewSort {
+  #element = null;
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(createSortTemplate());
+  get template() {
+    return createSortTemplate();
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

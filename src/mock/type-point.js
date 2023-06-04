@@ -1,9 +1,9 @@
 const POINT_TYPES = [
   {
     id: 1,
-    type: '',
-    label: ''
+    type: 'bus',
+    label: 'label'
   }
 ];
 
-export const getPointTypes = () => POINT_TYPES;
+export const gettypePoints = () => POINT_TYPES;

@@ -1,5 +1,5 @@
 import { createElement } from '../render.js';
-import { humanizeDate, humanizeTime } from '../presenter/util.js';
+import { humanizeDate, humanizeTime } from '../util.js';
 
 const createOfferTemplate = ({ title, price }) => (`
   <li class="event__offer">
@@ -9,11 +9,11 @@ const createOfferTemplate = ({ title, price }) => (`
   </li>
 `);
 
-const createOffersTemplate = (offers) => offers.length ? offers.map(createOfferTemplate).join('') : '';
+const pattern = (offers) => offers.length ? offers.map(createOfferTemplate).join('') : '';
 
 const createPointsTemplate = (point) => {
   const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
-  const offersTemplate = createOffersTemplate(offers);
+  const offersTemplate = pattern(offers);
 
   return (`
     <li class="trip-events__item">
@@ -46,19 +46,25 @@ const createPointsTemplate = (point) => {
 };
 
 export default class viewPoints {
+  #element = null;
+
   constructor(point) {
     this.point = point;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(createPointsTemplate(this.point));
+  get template() {
+    return createPointsTemplate(this.point);
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
