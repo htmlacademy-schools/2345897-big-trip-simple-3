@@ -12,5 +12,6 @@ const humanizeDate = (dueDate) => dayjs(dueDate).format('DD MMM');
 const humanizeDateTime = (dueDate) => dayjs(dueDate).format('YY/MM/DD HH:mm');
 const humanizeDateTimeForFilters = (dueDate) => dayjs(dueDate).format('YYYY-MM-DD');
 
+const updateItem = (points, update) => points.map((point) => point.id === update.id ? update : point);
 
-export {getRandomInteger, humanizeTime, humanizeDate, humanizeDateTime, humanizeDateTimeForFilters};
+export {getRandomInteger, humanizeTime, humanizeDate, humanizeDateTime, humanizeDateTimeForFilters, updateItem};

@@ -1,4 +1,4 @@
-import ViewFilter from './view/view-filter.js';
+import ViewFilters from './view/view-filter.js';
 import {render} from './framework/render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import PointModel from './model/model-point.js';
@@ -10,7 +10,7 @@ const pointsModel = new PointModel();
 
 const filters = generateFilter(pointsModel.points);
 
-render(new ViewFilter(filters), tripControlsFilters);
+render(new ViewFilters(filters), tripControlsFilters);
 
 const boardPresenter = new BoardPresenter(tripEventsSection, pointsModel);
 boardPresenter.init();
