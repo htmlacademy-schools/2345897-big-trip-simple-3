@@ -39,4 +39,4 @@ export const sortPointPrice = (dataA, dataB) => {
   return weight ?? dataA.basePrice - dataB.basePrice;
 };
 
-export const sortPointOffers = (dataA, dataB) => dataA.offers.length < dataB.offers.lenth;
+export const sortPointOffers = (dataA, dataB) => dataB.offers.length - dataA.offers.length;

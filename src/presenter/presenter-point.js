@@ -1,4 +1,4 @@
-import ViewPoin from '../view/view-point.js';
+import ViewPoint from '../view/view-point.js';
 import ViewEditPoint from '../view/view-editpoint.js';
 import { remove, render, replace } from '../framework/render.js';
 
@@ -31,7 +31,7 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
 
-    this.#pointComponent = new ViewPoin(point);
+    this.#pointComponent = new ViewPoint(point);
     this.#editPointComponent = new ViewEditPoint(point);
 
     this.#pointComponent.setPointClickHandler(() => {
