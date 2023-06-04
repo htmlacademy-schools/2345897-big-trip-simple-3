@@ -1,5 +1,6 @@
 import { getRandomInteger } from '../util.js';
 import { getOffers } from './offers.js';
+import { nanoid } from 'nanoid';
 
 export const cities = [
   'London',
@@ -75,10 +76,10 @@ for (let i = 0; i < 10; i++) {
 
 export const generateDataPoint = () => ({
   basePrice: getRandomInteger(200, 3000),
-  dateFrom: new Date(getRandomInteger(2010, 2022), getRandomInteger(0, 12), getRandomInteger(0, 31), getRandomInteger(0, 24), getRandomInteger(0, 60)),
+  dateFrom: new Date(getRandomInteger(2010, 2025), getRandomInteger(0, 12), getRandomInteger(0, 31), getRandomInteger(0, 24), getRandomInteger(0, 60)),
   dateTo: new Date(),
   destination: getRandomInteger(0, 9),
-  id: '0',
+  id: nanoid(),
   offers: [],
   type: generatePointType(),
 });
