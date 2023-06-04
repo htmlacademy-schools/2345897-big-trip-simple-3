@@ -1,4 +1,4 @@
-import { getRandomInteger } from '../util.js';
+import { getRandomInteger } from '../util/util.js';
 import { getOffers } from './offers.js';
 import { nanoid } from 'nanoid';
 
