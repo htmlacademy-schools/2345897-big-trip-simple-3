@@ -94,11 +94,12 @@ export default class BoardPresenter {
 
   #renderBoardPoints = () => this.#boardPoints.length ? this.#boardPoints.forEach((point) => this.#renderPoint(point)) : this.#renderViewEmpty();
 
-  // #renderNewPoint = () => render(new ViewNewPoint(this.#boardPoints[1]), this.#eventsList.element);
+  // #renderNewPoint = () => render(new ViewNewPoint(this.#boardPoints[0]), this.#eventsList.element);
 
   #renderBoard = () => {
     this.#renderSort();
     this.#renderEventList();
+    // this.#renderNewPoint();
     this.#renderBoardPoints();
     this.#boardPoints.sort(sortPointDay);
   };
