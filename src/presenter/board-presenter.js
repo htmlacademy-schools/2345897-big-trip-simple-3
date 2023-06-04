@@ -4,9 +4,9 @@ import SortView from '../view/sort-list.js';
 import TripList from '../view/trip-list.js';
 // import NewPointView from '../view/new-point.js';
 import EditPointView from '../view/edit-point.js';
-import EmptyView from '../view/empty-list.js';
+import EmptyView from '../view/view-listempty.js';
 
-export default class Presenter {
+export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #boardPoints = [];

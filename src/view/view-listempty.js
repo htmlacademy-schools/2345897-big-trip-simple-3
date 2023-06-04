@@ -17,7 +17,7 @@ const createEmptyTemplate = () => (
   `
 );
 
-export default class EmptyList extends AbstractView {
+export default class ViewEmpty extends AbstractView {
   get template() {
     return createEmptyTemplate();
   }

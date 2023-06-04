@@ -1,8 +1,23 @@
-import {createElement} from '../render.js';
 import { humanizeDateTime } from '../utils.js';
 import { cities } from '../mock/point.js';
 import { getOffers } from '../mock/offers.js';
 import { pointType } from '../mock/point.js';
+import AbstractView from '../framework/view/abstract-view.js';
+
+const BLANK_POINT = {
+  basePrice: null,
+  dateFrom: null,
+  dateTo: null,
+  destination: {
+    id: null,
+    description: null,
+    name: null,
+    pictures: null
+  },
+  id: null,
+  offers: [],
+  type: null,
+};
 
 const offerTemplate = (id, title, price, checked) => (
   `
@@ -19,26 +34,28 @@ const offerTemplate = (id, title, price, checked) => (
 );
 
 const getAllOffersId = (type) => {
+  if (!type) {return '';}
+
   const listOfAllOffers = getOffers().find((offer) => offer.type === type).offers;
   const finalListOfOffers = listOfAllOffers.length ? listOfAllOffers.map((offer) => offerTemplate(offer.id, offer.title, offer.price)) : listOfAllOffers;
   return finalListOfOffers.join('');
 };
 
-const offersTemplateContainer = (allOffers) => {
-  if (allOffers !== '') {
-    return (
-      `
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-          <div class="event__available-offers">
-            ${allOffers}
-          </div>
-        </section>
-      `
-    );
-  }
-  return '';
+const offersTemplateContainer = (allOffers) => {
+  if (!allOffers) {return '';}
+
+  return (
+    `
+      <section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+        <div class="event__available-offers">
+          ${allOffers}
+        </div>
+      </section>
+    `
+  );
 };
 
 const iconsTypesMarking = (typeInner, checked) => (
@@ -51,19 +68,21 @@ const iconsTypesMarking = (typeInner, checked) => (
 );
 
 const iconsTypesChecked = (typeInner) => {
+  if (!typeInner) {return '';}
+
   const iconsListMarking = [];
   let checked = '';
-  for (let i = 0; i < pointType .length; i++) {
-    checked = typeInner === pointType [i] ? 'checked' : '';
-    iconsListMarking.push(iconsTypesMarking(pointType [i], checked));
+  for (let i = 0; i < pointType.length; i++) {
+    checked = typeInner === pointType[i] ? 'checked' : '';
+    iconsListMarking.push(iconsTypesMarking(pointType[i], checked));
   }
   return iconsListMarking.join('');
 };
 
-const createPictureTemplate = (photo) => (`
-  <img class="event__photo" src="${photo.src}" alt="Event photo">
+const createPictureTemplate = (pictures) => (`
+  <img class="event__photo" src="${pictures.src}" alt="Event photo">
 `);
-const createphotoTemplate = (destination) => destination.photo.length ? destination.photo.map(createPictureTemplate).join('') : '';
+const createPicturesTemplate = (destination) => destination.pictures.length ? destination.pictures.map(createPictureTemplate).join('') : '';
 
 const createCityTemplate = (city) => (`
     <option value="${city}"></option>
@@ -72,9 +91,17 @@ const createCitiesTemplate = (city) => city.length ? city.map(createCityTemplate
 
 const createNewPointTemplate = (point) => {
   const {dateFrom, dateTo, destination, offers, type} = point;
+
   const allOffersByType = getAllOffersId(type, offers);
   const offersContainer = offersTemplateContainer(allOffersByType);
-  const photoTemplate = createphotoTemplate(destination);
+  const picturesTemplate = destination.pictures ? createPicturesTemplate(destination) : '';
+  const iconsTyped = iconsTypesChecked(type);
+  const citiesTemplate = createCitiesTemplate(cities);
+  const humanizedDateFrom = dateFrom ? humanizeDateTime(dateFrom) : '';
+  const humanizedDateTo = dateTo ? humanizeDateTime(dateTo) : '';
+  const destinationName = destination.name ? destination.name : '';
+  const destinationDescription = destination.description ? destination.description : '';
+  const eventType = type ? type : '';
 
   return (`
 <li class="trip-events__item">
@@ -90,27 +117,27 @@ const createNewPointTemplate = (point) => {
       <div class="event__type-list">
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Event type</legend>
-          ${iconsTypesChecked(type)}
+          ${iconsTyped}
         </fieldset>
       </div>
     </div>
 
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-        ${type}
+        ${eventType}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
       <datalist id="destination-list-1">
-      ${createCitiesTemplate(cities)}
+      ${citiesTemplate}
       </datalist>
     </div>
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDateTime(dateFrom)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizedDateFrom}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDateTime(dateTo)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizedDateTo}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -126,42 +153,31 @@ const createNewPointTemplate = (point) => {
   </header>
   <section class="event__details">
   ${offersContainer}
+
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${destination.description}</p>
+      <p class="event__destination-description">${destinationDescription}</p>
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          ${photoTemplate}
+          ${picturesTemplate}
         </div>
       </div>
     </section>
+
   </section>
 </form>
 </li>
 `);
 };
 
-export default class viewNewPoint {
-  #element = null;
-
-  constructor(point) {
+export default class ViewNewPoint extends AbstractView {
+  constructor(point = BLANK_POINT) {
+    super();
     this.point = point;
   }
 
   get template() {
     return createNewPointTemplate(this.point);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

@@ -1,8 +1,8 @@
-import {createElement} from '../render.js';
 import { humanizeDateTime } from '../util.js';
 import { cities } from '../mock/point.js';
 import { getOffers } from '../mock/offers.js';
 import { pointType } from '../mock/point.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const offerTemplate = (id, title, price, checked) => (
   `
@@ -36,26 +36,24 @@ const getAllOffersId = (type, offersInner) => {
 };
 
 const offersTemplateContainer = (allOffers) => {
-  if (allOffers !== '') {
-    return (
-      `
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  if (!allOffers) {return '';}
+  return (
+    `
+      <section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-          <div class="event__available-offers">
-            ${allOffers}
-          </div>
-        </section>
-      `
-    );
-  }
-  return '';
+        <div class="event__available-offers">
+          ${allOffers}
+        </div>
+      </section>
+    `
+  );
 };
 
-const createPictureTemplate = (photo) => (`
-  <img class="event__photo" src="${photo.src}" alt="Event photo">
+const createPictureTemplate = (pictures) => (`
+  <img class="event__photo" src="${pictures.src}" alt="Event photo">
 `);
-const createphotoTemplate = (destination) => destination.photo.length ? destination.photo.map(createPictureTemplate).join('') : '';
+const createPicturesTemplate = (destination) => destination.pictures.length ? destination.pictures.map(createPictureTemplate).join('') : '';
 
 const createCityTemplate = (city) => (`
     <option value="${city}"></option>
@@ -74,9 +72,9 @@ const iconsTypesMarking = (typeInner, checked) => (
 const iconsTypesChecked = (typeInner) => {
   const iconsListMarking = [];
   let checked = '';
-  for (let i = 0; i < pointType .length; i++) {
-    checked = typeInner === pointType [i] ? 'checked' : '';
-    iconsListMarking.push(iconsTypesMarking(pointType [i], checked));
+  for (let i = 0; i < pointType.length; i++) {
+    checked = typeInner === pointType[i] ? 'checked' : '';
+    iconsListMarking.push(iconsTypesMarking(pointType[i], checked));
   }
   return iconsListMarking.join('');
 };
@@ -85,7 +83,7 @@ const editPointTemplate = (point) => {
   const {basePrice, dateFrom, dateTo, destination, offers, type} = point;
   const allOffersByType = getAllOffersId(type, offers);
   const offersContainer = offersTemplateContainer(allOffersByType);
-  const photoTemplate = createphotoTemplate(destination);
+  const picturesTemplate = createPicturesTemplate(destination);
 
   return (`
 <li class="trip-events__item">
@@ -146,7 +144,7 @@ const editPointTemplate = (point) => {
       <p class="event__destination-description">${destination.description}</p>
       <div class="event__photos-container">
       <div class="event__photos-tape">
-        ${photoTemplate}
+        ${picturesTemplate}
       </div>
     </div>
     </section>
@@ -156,10 +154,9 @@ const editPointTemplate = (point) => {
 `);
 };
 
-export default class viewEditPoint {
-  #element = null;
-
+export default class ViewEditPoint extends AbstractView {
   constructor(point) {
+    super();
     this.point = point;
   }
 
@@ -167,15 +164,23 @@ export default class viewEditPoint {
     return editPointTemplate(this.point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setEditClickHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+  };
 
-    return this.#element;
-  }
+  setFormSubmitHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#submitClickHandler);
+  };
 
-  removeElement() {
-    this.#element = null;
-  }
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
+  };
+
+  #submitClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
+  };
 }
