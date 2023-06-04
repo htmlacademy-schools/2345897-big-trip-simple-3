@@ -9,11 +9,11 @@ const createOfferTemplate = ({ title, price }) => (`
   </li>
 `);
 
-const pattern = (offers) => offers.length ? offers.map(createOfferTemplate).join('') : '';
+const createOffersTemplate = (offers) => offers.length ? offers.map(createOfferTemplate).join('') : '';
 
 const createPointsTemplate = (point) => {
   const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
-  const offersTemplate = pattern(offers);
+  const offersTemplate = createOffersTemplate(offers);
 
   return (`
     <li class="trip-events__item">
@@ -45,7 +45,7 @@ const createPointsTemplate = (point) => {
   `);
 };
 
-export default class viewPoints {
+export default class viewPoint {
   #element = null;
 
   constructor(point) {

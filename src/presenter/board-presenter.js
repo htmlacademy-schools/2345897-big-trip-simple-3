@@ -1,9 +1,10 @@
 import { render } from '../render.js';
-import viewPoints from '../view/view-point.js';
+import viewPoint from '../view/view-point.js';
 import viewSort from '../view/view-sort.js';
 import viewList from '../view/view-eventlist.js';
-import viewNewPoint from '../view/view-newpoint.js';
+
 import viewEditPoint from '../view/edit-pointview.js';
+import viewNul from '../view/view-list.js';
 
 export default class BoardPresenter {
   eventsList = new viewList();
@@ -15,15 +16,17 @@ export default class BoardPresenter {
 
     render(new viewSort(), this.boardContainer);
     render(this.eventsList, this.boardContainer);
-    render(new viewNewPoint(this.boardPoints[1]), this.eventsList.element);
-
-    for (let i = 0; i < this.boardPoints.length; i++) {
-      this.#renderPoint(this.boardPoints[i]);
+    if (this.boardPoints.every((point) => point.isArchive)) {
+      render(new viewNul(), this.eventsList.element);
+    } else {
+      for (let i = 0; i < this.boardPoints.length; i++) {
+        this.#renderPoint(this.boardPoints[i]);
+      }
     }
   };
 
   #renderPoint = (point) => {
-    const pointComponent = new viewPoints(point);
+    const pointComponent = new viewPoint(point);
     const editPointComponent = new viewEditPoint(point);
 
     const replaceEditFormToPoint = () => {

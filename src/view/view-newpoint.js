@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 import { humanizeDateTime } from '../util.js';
 import { cities } from '../mock/point.js';
 import { getOffers } from '../mock/offers.js';
-import { typePoint } from '../mock/point.js';
+import { pointType } from '../mock/point.js';
 
 const offerTemplate = (id, title, price, checked) => (
   `
@@ -53,9 +53,9 @@ const iconsTypesMarking = (typeInner, checked) => (
 const iconsTypesChecked = (typeInner) => {
   const iconsListMarking = [];
   let checked = '';
-  for (let i = 0; i < typePoint.length; i++) {
-    checked = typeInner === typePoint[i] ? 'checked' : '';
-    iconsListMarking.push(iconsTypesMarking(typePoint[i], checked));
+  for (let i = 0; i < pointType .length; i++) {
+    checked = typeInner === pointType [i] ? 'checked' : '';
+    iconsListMarking.push(iconsTypesMarking(pointType [i], checked));
   }
   return iconsListMarking.join('');
 };
