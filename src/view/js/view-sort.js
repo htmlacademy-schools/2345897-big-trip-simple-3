@@ -1,4 +1,5 @@
 import ViewRadioButton, {html} from './view-radio-button.js';
+import DOMPurify from 'dompurify';
 
 export default class SortView extends ViewRadioButton {
   /**
@@ -38,7 +39,7 @@ export default class SortView extends ViewRadioButton {
   setOptions(states) {
     const templates = states.map(this.createOptionTemplate);
 
-    this.querySelector('form').innerHTML = templates.join('');
+    this.querySelector('form').innerHTML = DOMPurify.sanitize(templates.join(''));
 
     return this;
   }

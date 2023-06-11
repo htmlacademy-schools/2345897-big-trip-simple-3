@@ -1,6 +1,7 @@
 import '../offer-select-view.css';
 
 import View, {html} from './view.js';
+import DOMPurify from 'dompurify';
 
 export default class OfferSelectView extends View {
   constructor() {
@@ -57,7 +58,7 @@ export default class OfferSelectView extends View {
   setOptions(states) {
     const templates = states.map(this.createOptionTemplate);
 
-    this.querySelector('.event__available-offers').innerHTML = templates.join('');
+    this.querySelector('.event__available-offers').innerHTML = DOMPurify.sanitize(templates.join(''));
 
     return this;
   }

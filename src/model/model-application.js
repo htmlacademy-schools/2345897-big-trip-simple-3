@@ -52,7 +52,7 @@ export default class ApplicationModel extends Model {
    * @param {number} mode
    * @param {string} activePointId
    */
-  setMode(mode, activePointId = null) {
+  setMode(mode, activePointId) {
     switch (mode) {
       case Mode.VIEW:
         this.activePoint = null;
