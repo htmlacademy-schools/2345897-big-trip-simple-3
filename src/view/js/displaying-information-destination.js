@@ -1,4 +1,5 @@
 import View, {html} from './view.js';
+import DOMPurify from 'dompurify';
 
 export default class DisplayingInformationDestination extends View {
   constructor() {
@@ -46,7 +47,7 @@ export default class DisplayingInformationDestination extends View {
   setPictures(states) {
     const templates = states.map(this.createPictureTemplate);
 
-    this.querySelector('.event__photos-tape').innerHTML = templates.join('');
+    this.querySelector('.event__photos-tape').innerHTML = DOMPurify.sanitize(templates.join(''));
 
     return this;
   }
